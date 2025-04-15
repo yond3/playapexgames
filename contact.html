@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - APEX Games</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* Basic Reset & Body Styling */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Orbitron', sans-serif; color: #fff; background-color: #0a0a1a;
+            position: relative; overflow-x: hidden; min-height: 100vh;
+        }
+        .background-image {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: url('placeholder-about-background.jpg') no-repeat center center/cover;
+            z-index: -2; opacity: 0.5;
+        }
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(10, 10, 26, 0.6), rgba(10, 10, 26, 1) 70%);
+            z-index: -1;
+        }
+        /* Header Styling (Unchanged) */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; position: relative; z-index: 10; }
+        .logo { font-size: 1.8em; font-weight: bold; color: #e0e0ff; text-shadow: 0 0 5px #cc00ff, 0 0 10px #cc00ff; }
+        nav ul { list-style: none; display: flex; }
+        nav ul li { margin-left: 30px; }
+        nav ul li a { text-decoration: none; color: #b0b0ff; padding: 5px 10px; border-radius: 4px; transition: background-color 0.3s, color 0.3s, text-shadow 0.3s; }
+        nav ul li a.active, nav ul li a:hover { color: #fff; background-color: rgba(204, 0, 255, 0.3); text-shadow: 0 0 8px #fff; }
+        .sign-in-btn { padding: 10px 25px; background-color: #8A2BE2; border: 1px solid #cc00ff; color: #fff; font-family: 'Orbitron', sans-serif; font-size: 1em; cursor: pointer; border-radius: 20px; transition: background-color 0.3s, box-shadow 0.3s; box-shadow: 0 0 5px #cc00ff, inset 0 0 5px rgba(255, 255, 255, 0.3); }
+        .sign-in-btn:hover { background-color: #9932CC; box-shadow: 0 0 15px #cc00ff, inset 0 0 8px rgba(255, 255, 255, 0.5); }
+
+        /* Main Content Styling for Contact Page */
+        main { padding: 30px 5% 50px; position: relative; z-index: 5; }
+        .main-heading { text-align: center; font-size: 3em; margin-bottom: 40px; color: #f0f0ff; text-shadow: 0 0 10px #cc00ff; }
+
+        /* --- MODIFIED CSS --- */
+        .contact-content {
+            /* Removed display: flex and gap */
+            background-color: rgba(15, 15, 30, 0.5);
+            padding: 40px; /* Keep padding or adjust as needed */
+            border-radius: 10px;
+            /* No specific layout needed here anymore */
+        }
+
+        /* Contact Form Styling - Removed as form is gone */
+        /* .contact-form { ... } */
+        /* .contact-form .input-group { ... } */
+        /* ... etc ... */
+
+        /* Contact Details Styling - MODIFIED */
+        .contact-details {
+            /* Removed flex-basis and padding-left */
+            max-width: 500px; /* Set a max-width for the block */
+            margin: 0 auto;  /* Center the block horizontally */
+            /* Styles for content inside .contact-details remain */
+        }
+
+        .contact-details h2 { font-size: 2em; margin-bottom: 15px; color: #f0f0ff; text-shadow: 0 0 8px #cc00ff; text-align: center; /* Center heading */ }
+        .contact-details p { line-height: 1.6; color: #c0c0f0; margin-bottom: 30px; text-align: center; /* Center paragraph */}
+        .contact-method { display: flex; align-items: center; margin-bottom: 20px; gap: 15px; justify-content: center; /* Center items slightly */ }
+        .contact-method i { font-size: 1.8em; color: #8A2BE2; width: 30px; text-align: center; }
+        .contact-method div { display: flex; flex-direction: column; }
+        .contact-method span { font-weight: bold; color: #e0e0ff; font-size: 1.1em; }
+        .contact-method a, .contact-method .detail { color: #b0b0ff; text-decoration: none; font-size: 0.95em; word-break: break-all; }
+        .contact-method a:hover { color: #cc00ff; }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            /* Removed .contact-content flex-direction */
+            /* Removed .contact-details padding/margin overrides as centering is handled above */
+             .contact-details {
+                 max-width: 90%; /* Allow slightly wider on medium screens */
+             }
+        }
+
+        @media (max-width: 768px) {
+            header { flex-direction: column; }
+            nav ul { margin-top: 15px; justify-content: center; padding-left: 0; }
+            nav ul li { margin: 0 10px; }
+            header .sign-in-btn { margin-top: 15px; }
+            .main-heading { font-size: 2.5em; }
+             .contact-content { padding: 30px 20px; } /* Adjust padding */
+        }
+        /* --- END MODIFIED CSS --- */
+
+
+        /* === START: Modal CSS (Unchanged from previous version) === */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 10, 0.8); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(5px); }
+        .modal-content { background: #101025; padding: 30px 40px; border-radius: 15px; position: relative; width: 90%; max-width: 420px; box-shadow: 0 0 25px rgba(138, 43, 226, 0.6); border: 1px solid rgba(138, 43, 226, 0.4); color: #e0e0ff; }
+        .close-modal { position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 2.2em; color: #a0a0c0; cursor: pointer; line-height: 1; padding: 0; }
+        .close-modal:hover { color: #fff; }
+        .modal-tabs { display: flex; margin-bottom: 25px; border-bottom: 1px solid rgba(138, 43, 226, 0.3); }
+        .tab-btn { flex-grow: 1; padding: 10px 15px; background: none; border: none; color: #a0a0c0; font-family: 'Orbitron', sans-serif; font-size: 1.1em; cursor: pointer; border-bottom: 3px solid transparent; transition: color 0.3s, border-color 0.3s; }
+        .tab-btn:hover { color: #fff; }
+        .tab-btn.active-tab { color: #fff; border-bottom-color: #cc00ff; }
+        .modal-form { display: flex; flex-direction: column; gap: 18px; }
+        .modal-form h2 { text-align: center; color: #fff; font-size: 1.8em; margin-bottom: 5px; text-shadow: 0 0 8px #cc00ff; }
+        .modal-form .subheading { text-align: center; color: #b0b0ff; margin-bottom: 15px; font-size: 0.95em; }
+        .input-wrapper { position: relative; }
+        .input-wrapper i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #8A2BE2; font-size: 1.1em; z-index: 1; }
+        .input-wrapper input[type="text"], .input-wrapper input[type="email"], .input-wrapper input[type="password"] { width: 100%; padding: 14px 15px 14px 50px; background-color: rgba(10, 10, 20, 0.7); border: 1px solid #8A2BE2; border-radius: 30px; color: #fff; font-family: 'Orbitron', sans-serif; font-size: 1em; transition: border-color 0.3s, box-shadow 0.3s; }
+        .input-wrapper input[type="text"]:focus, .input-wrapper input[type="email"]:focus, .input-wrapper input[type="password"]:focus { outline: none; border-color: #cc00ff; box-shadow: 0 0 10px rgba(204, 0, 255, 0.5); }
+        .toggle-password { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: #8A2BE2; cursor: pointer; z-index: 1; }
+        .toggle-password:hover { color: #cc00ff; }
+        .form-options { text-align: right; margin-top: -10px; margin-bottom: 10px; }
+        .forgot-password { color: #b0b0ff; font-size: 0.9em; text-decoration: none; }
+        .forgot-password:hover { color: #fff; text-decoration: underline; }
+        .form-buttons { display: flex; gap: 15px; margin-top: 10px; }
+        .form-buttons .primary-btn, .form-buttons .secondary-btn { flex-grow: 1; padding: 12px 20px; border: none; border-radius: 30px; font-family: 'Orbitron', sans-serif; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: background-color 0.3s, color 0.3s, box-shadow 0.3s; }
+        .form-buttons .primary-btn { background-color: #fff; color: #1a1a3a; border: 1px solid #fff; }
+        .form-buttons .primary-btn:hover { background-color: #cc00ff; color: #fff; border-color: #cc00ff; box-shadow: 0 0 10px #cc00ff; }
+        .form-buttons .secondary-btn { background-color: transparent; color: #fff; border: 1px solid #8A2BE2; }
+        .form-buttons .secondary-btn:hover { background-color: rgba(138, 43, 226, 0.2); border-color: #cc00ff; color: #fff; }
+        .hidden-form { display: none; }
+        @media (max-width: 768px) { .modal-content { padding: 25px 20px; max-width: 90%; } .modal-form h2 { font-size: 1.6em; } .tab-btn { font-size: 1em; } .form-buttons { flex-direction: column; } .input-wrapper i { left: 15px; } .input-wrapper input[type="text"], .input-wrapper input[type="email"], .input-wrapper input[type="password"] { padding-left: 45px; } .toggle-password { right: 15px; } }
+        /* === END: Modal CSS === */
+    </style>
+</head>
+<body>
+    <div class="background-image"></div>
+    <div class="overlay"></div>
+
+    <header>
+        <div class="logo">APEX Games</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html" class="active">Contact Us</a></li>
+            </ul>
+        </nav>
+        <button id="signInBtn" class="sign-in-btn">Sign In</button>
+    </header>
+
+    <main>
+        <h1 class="main-heading">Get in Touch.</h1>
+
+        <section class="contact-content">
+
+            <div class="contact-details">
+                <h2>Contact Us</h2>
+                <p>Whether you have questions about our services, need support, or want to share your feedback, our dedicated team is here to assist you every step of the way.</p>
+
+                <div class="contact-method"><i class="fas fa-envelope"></i> <div><span>Email</span><a href="mailto:ApexGames@gmail.com">ApexGames@gmail.com</a></div></div>
+                <div class="contact-method"><i class="fab fa-discord"></i> <div><span>Discord</span><a href="#" target="_blank">ApexGames#discord</a></div></div>
+                <div class="contact-method"><i class="fas fa-phone"></i> <div><span>Phone</span><span class="detail">+123-456-7890</span></div></div>
+                <div class="contact-method"><i class="fab fa-twitter"></i> <div><span>Twitter</span><a href="https://twitter.com/ApexGamesXcom" target="_blank">https://ApexGamesXcom</a></div></div>
+            </div>
+        </section>
+    </main>
+
+    <div id="signInModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-modal" aria-label="Close modal">&times;</button>
+            <div class="modal-tabs"><button id="loginTab" class="tab-btn">LOGIN</button><button id="signupTab" class="tab-btn active-tab">SIGN-UP</button></div>
+            <form id="signupForm" class="modal-form" action="#" method="post"><h2>WELCOME!</h2><p class="subheading">Create your account</p><div class="input-wrapper"><i class="fas fa-user"></i><input type="text" name="signup_username" placeholder="Username" required autocomplete="username"></div><div class="input-wrapper"><i class="fas fa-envelope"></i><input type="email" name="signup_email" placeholder="Email" required autocomplete="email"></div><div class="input-wrapper"><i class="fas fa-lock"></i><input type="password" name="signup_password" placeholder="Password" required autocomplete="new-password" id="signupPassword"><span class="toggle-password"><i class="fas fa-eye"></i></span></div><div class="input-wrapper"><i class="fas fa-lock"></i><input type="password" name="signup_password_repeat" placeholder="Repeat Password" required autocomplete="new-password" id="signupPasswordRepeat"><span class="toggle-password"><i class="fas fa-eye"></i></span></div><div class="form-buttons"><button type="button" class="secondary-btn login-switch-btn">Login</button><button type="submit" class="primary-btn">Sign Up</button></div></form>
+            <form id="loginForm" class="modal-form hidden-form" action="#" method="post"><h2>WELCOME BACK!</h2><p class="subheading">Sign in to your account</p><div class="input-wrapper"><i class="fas fa-user"></i> <input type="text" name="login_identifier" placeholder="Username or Email" required autocomplete="username"></div><div class="input-wrapper"><i class="fas fa-lock"></i><input type="password" name="login_password" placeholder="Password" required autocomplete="current-password" id="loginPassword"><span class="toggle-password"><i class="fas fa-eye"></i></span></div><div class="form-options"><a href="#" class="forgot-password">Forgot Password?</a></div><div class="form-buttons"><button type="button" class="secondary-btn signup-switch-btn">Sign Up</button><button type="submit" class="primary-btn">Login</button></div></form>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+ import { initializeApp } from "firebase/app";
+ import { getAnalytics } from "firebase/analytics";
+ // TODO: Add SDKs for Firebase products that you want to use
+ // https://firebase.google.com/docs/web/setup#available-libraries
+ 
+ // Your web app's Firebase configuration
+ // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+ const firebaseConfig = {
+   apiKey: "AIzaSyB4shH6owP4rwuYTwEIcRjaZRJh5p6b_6s",
+   authDomain: "apexgames-a5903.firebaseapp.com",
+   projectId: "apexgames-a5903",
+   storageBucket: "apexgames-a5903.firebasestorage.app",
+   messagingSenderId: "927388647652",
+   appId: "1:927388647652:web:f065997c4969510b056cf1",
+   measurementId: "G-B5GKRLC8X7"
+ };
+ 
+ // Initialize Firebase
+ const app = initializeApp(firebaseConfig);
+ const analytics = getAnalytics(app);
+       </script>
+
+<script>
+    // Get elements (Keep all these existing declarations)
+    const signInModal = document.getElementById('signInModal');
+    const signInBtn = document.getElementById('signInBtn');
+    const closeModalBtn = signInModal.querySelector('.close-modal');
+    const loginTab = document.getElementById('loginTab');
+    const signupTab = document.getElementById('signupTab');
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    const loginSwitchBtns = document.querySelectorAll('.login-switch-btn');
+    const signupSwitchBtns = document.querySelectorAll('.signup-switch-btn');
+    const passwordToggles = document.querySelectorAll('.toggle-password i');
+
+    // Function definitions (Keep all these existing functions)
+    function openModal() { /* ... */ }
+    function closeModal() { /* ... */ }
+    function switchToLoginTab() { /* ... */ }
+    function switchToSignupTab() { /* ... */ }
+    function togglePasswordVisibility(event) { /* ... */ }
+
+    // --- Event Listeners --- (Keep all these existing listeners)
+
+    // Open modal when header button is clicked
+    if (signInBtn) { signInBtn.addEventListener('click', openModal); }
+    else { console.error("Sign In Button not found! Check the ID."); }
+
+    // Close modal via close button
+    if (closeModalBtn) { closeModalBtn.addEventListener('click', closeModal); }
+
+    // Close modal if clicking on the overlay itself
+    if (signInModal) { signInModal.addEventListener('click', (event) => { if (event.target === signInModal) { closeModal(); } }); }
+
+    // Tab switching via tab buttons
+    if (loginTab) { loginTab.addEventListener('click', switchToLoginTab); }
+    if (signupTab) { signupTab.addEventListener('click', switchToSignupTab); }
+
+     // Tab switching via buttons inside forms
+     loginSwitchBtns.forEach(btn => btn.addEventListener('click', switchToLoginTab));
+     signupSwitchBtns.forEach(btn => btn.addEventListener('click', switchToSignupTab));
+
+     // Password visibility toggle
+     passwordToggles.forEach(icon => {
+        icon.addEventListener('click', togglePasswordVisibility);
+        icon.parentElement.style.cursor = 'pointer';
+        icon.parentElement.setAttribute('tabindex', '0');
+         icon.parentElement.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { togglePasswordVisibility({ target: icon }); } });
+     });
+
+     // Optional: Close modal on Escape key press
+     document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && signInModal && signInModal.style.display === 'flex') { closeModal(); } });
+
+
+    // --- REMOVE OR COMMENT OUT THE OLD FORM SUBMIT LOGIC ---
+    /*
+    [loginForm, signupForm].forEach(form => {
+        if (form) {
+            form.addEventListener('submit', (event) => {
+                // Example: Check if password repeat matches in signup form
+                if (form.id === 'signupForm') {
+                    const pass = document.getElementById('signupPassword');
+                    const repeatPass = document.getElementById('signupPasswordRepeat');
+                    if (pass && repeatPass && pass.value !== repeatPass.value) {
+                        alert("Passwords do not match!");
+                        event.preventDefault(); // Prevent form submission
+                        return;
+                    }
+                }
+                console.log(`Form ${form.id} submitted (currently does nothing).`);
+                // event.preventDefault();
+            });
+        }
+    });
+    */
+
+    // --- ADD THE NEW FIREBASE FORM SUBMIT LOGIC HERE (FROM STEP 3) ---
+
+    // Sign Up Form Submit -> Use Firebase Auth
+    if (signupForm) {
+        signupForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent default page reload
+
+            const emailInput = signupForm.querySelector('input[name="signup_email"]');
+            const passwordInput = signupForm.querySelector('input[name="signup_password"]');
+            const passwordRepeatInput = signupForm.querySelector('input[name="signup_password_repeat"]');
+
+            const email = emailInput ? emailInput.value : null;
+            const password = passwordInput ? passwordInput.value : null;
+            const passwordRepeat = passwordRepeatInput ? passwordRepeatInput.value : null;
+
+            // Basic Validation
+            if (!email || !password || !passwordRepeat) {
+                alert("Please fill in all sign-up fields.");
+                return;
+            }
+            if (password !== passwordRepeat) {
+                alert("Passwords do not match!");
+                return;
+            }
+
+            // Use Firebase function (accessing via window)
+            window.firebaseCreateUserWithEmailAndPassword(window.firebaseAuth, email, password)
+                .then((userCredential) => {
+                    // Signed up successfully
+                    const user = userCredential.user;
+                    console.log("Sign up successful!", user);
+                    alert("Sign up successful! You are now logged in.");
+
+                    // Optional: Save user info to Firestore
+                    window.firebaseSetDoc(window.firebaseDoc(window.firebaseDb, "users", user.uid), {
+                        email: user.email,
+                        createdAt: window.firebaseServerTimestamp()
+                    }).then(() => {
+                         console.log("User data saved to Firestore");
+                    }).catch((error) => {
+                        console.error("Error saving user data to Firestore: ", error);
+                    });
+
+                    closeModal(); // Close the modal on success
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.error("Sign up error:", errorCode, errorMessage);
+                    if (errorCode === 'auth/email-already-in-use') {
+                        alert("This email address is already registered.");
+                    } else if (errorCode === 'auth/weak-password') {
+                        alert("Password is too weak. Please use at least 6 characters.");
+                    } else {
+                        alert("Sign up failed: " + errorMessage);
+                    }
+                });
+        });
+    }
+
+    // Login Form Submit -> Use Firebase Auth
+    if (loginForm) {
+        loginForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent default page reload
+
+            const identifierInput = loginForm.querySelector('input[name="login_identifier"]'); // Assuming this holds email
+            const passwordInput = loginForm.querySelector('input[name="login_password"]');
+
+            const email = identifierInput ? identifierInput.value : null; // Assuming email login for now
+            const password = passwordInput ? passwordInput.value : null;
+
+            if (!email || !password) {
+                alert("Please enter both email and password.");
+                return;
+            }
+
+            // Use Firebase function (accessing via window)
+            window.firebaseSignInWithEmailAndPassword(window.firebaseAuth, email, password)
+                .then((userCredential) => {
+                    // Signed in successfully
+                    const user = userCredential.user;
+                    console.log("Login successful!", user);
+                    alert("Login successful!");
+                    closeModal(); // Close the modal on success
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.error("Login error:", errorCode, errorMessage);
+                     if (errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password' || errorCode === 'auth/invalid-credential') {
+                         alert("Incorrect email or password.");
+                    } else if (errorCode === 'auth/invalid-email') {
+                        alert("Please enter a valid email address.");
+                    } else {
+                        alert("Login failed: " + errorMessage);
+                    }
+                });
+        });
+    }
+
+    // --- Optional: Add Contact Form Listener Here (FROM STEP 4) if needed ---
+    /*
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+         contactForm.addEventListener('submit', (event) => {
+             // ... Add the contact form saving logic from Step 4 here ...
+         });
+    }
+    */
+
+</script>
+
+</body>
+</html>
