@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bug Hunter Game</title>
+    <link rel="stylesheet" href="bug_hunter_style.css">
+</head>
+<body>
+    <div id="loading-message" style="text-align: center; padding: 50px;">
+        <h2>Loading Bug Hunter...</h2>
+        <p>Checking authentication...</p>
+    </div>
+
+    <div class="container" style="display: none;"> <h1>Bug Hunter!</h1>
+
+        <div id="start-screen" class="active"> <p>Press Start to begin hunting bugs!</p>
+            <button id="start-button">Start Game</button>
+        </div>
+
+        <div id="game-area"> <p>Find and fix the bug in the code below within 30 seconds!</p>
+            <div class="info">
+                <span id="timer">Time Left: 30s</span>
+                <span id="score">Score: 0</span>
+            </div>
+            <div class="code-container">
+                <label for="code-snippet">Buggy Code:</label>
+                <pre><code id="code-snippet"></code></pre>
+            </div>
+            <div class="solution-container">
+                <label for="user-solution">Your Fixed Code:</label>
+                <textarea id="user-solution" rows="5" placeholder="Enter the corrected line(s) here..."></textarea>
+            </div>
+            <button id="submit-button">Submit Fix</button>
+            <p id="feedback"></p>
+        </div>
+
+        <div id="game-over-screen"> <h2>Game Over!</h2>
+            <p>Your final score: <span id="final-score">0</span></p>
+            <button id="restart-button">Play Again?</button>
+        </div>
+    </div>
+
+    <script type="module" src="bug_hunter_script.js"></script>
+
+    <script>
+      // This runs after HTML is parsed but potentially before module script finishes auth
+      const loadingMessage = document.getElementById('loading-message');
+      const gameContainer = document.querySelector('.container'); // Assuming your game content is in .container
+
+      // The module script will hide loading and show container once auth is confirmed
+      // Optionally hide container by default via CSS instead
+      if (gameContainer) {
+          gameContainer.style.display = 'none'; // Ensure it's hidden
+      }
+       if (loadingMessage) {
+          loadingMessage.style.display = 'block'; // Ensure loading is visible
+      }
+
+      // Add a function the module script can call when ready
+      window.showGameContainer = () => {
+          if (loadingMessage) loadingMessage.style.display = 'none';
+          if (gameContainer) gameContainer.style.display = 'block'; // Or 'flex', 'grid' depending on layout
+      }
+    </script>
+
+</body>
+</html>
